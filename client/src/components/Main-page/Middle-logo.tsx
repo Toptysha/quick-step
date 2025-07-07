@@ -1,20 +1,30 @@
 'use client';
 
 import styled from "styled-components";
-import { COLORS, WIX_MADEFOR_TEXT_WEIGHT } from "@/constants";
+import { COLORS, WINDOW_WIDTH, WIX_MADEFOR_TEXT_WEIGHT } from "@/constants";
 import { CatalogButtonComponent } from "@/components";
 
 const MiddleLogoWrapper = styled.div`
-    background-color: ${COLORS.CORPORATE_BLUE};
+box-sizing: border-box;    
+background-color: ${COLORS.CORPORATE_BLUE};
     width: 100%;
     height: 250px;
-    margin: 80px 0 80px 0;
+    margin: 40px 0 0 0;
     padding: 0 30px;
     border-radius: 24px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    // flex-wrap: wrap;
+    
+    @media (${WINDOW_WIDTH.MOBILE}) {
+        width: 90%;
+        ${WINDOW_WIDTH.SUPER_MINI};
+        margin: -10px 0 0 0;
+    }
+
+    @media (max-width: 660px) {
+        display: none;
+    }
 `
 
 const Logo = styled.img`
@@ -25,9 +35,14 @@ const InfoBox = styled.div`
     width: 32%;
     height: 75%;
     padding: 20px;
+    margin: 0 10px;
     background-color: rgb(29, 81, 172);
     color: ${COLORS.CORPORATE_GRAY};
     border-radius: 24px;
+
+    @media (${WINDOW_WIDTH.MOBILE}) {
+        min-width: 180px;
+    }
 `
 
 const InfoBoxTitle = styled.div`
@@ -36,6 +51,10 @@ const InfoBoxTitle = styled.div`
     font-size: 24px;
     ${WIX_MADEFOR_TEXT_WEIGHT('600')};
     letter-spacing: -0.5px;
+
+    @media (${WINDOW_WIDTH.MOBILE}) {
+        font-size: 16px;
+    }
 `
 
 const InfoBoxDescription = styled.div`
@@ -43,6 +62,10 @@ const InfoBoxDescription = styled.div`
     font-size: 18px;
     ${WIX_MADEFOR_TEXT_WEIGHT('400')};
     letter-spacing: -0.5px;
+
+    @media (${WINDOW_WIDTH.MOBILE}) {
+        font-size: 14px;
+    }
 `
 
 

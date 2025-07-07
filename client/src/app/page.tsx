@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { AdvantagesComponent, ContactsComponent, FeedbackComponent, FloorsComponent, InfoComponent, MiddleLogoComponent, WallpaperComponent } from "@/components";
 import { WINDOW_WIDTH } from "@/constants";
 
-const BodyWrapper = styled.header`
+const BodyWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;

@@ -1,17 +1,23 @@
 'use client';
 
 import styled from "styled-components";
-import { WIX_MADEFOR_TEXT_WEIGHT } from "@/constants";
+import { WINDOW_WIDTH, WIX_MADEFOR_TEXT_WEIGHT } from "@/constants";
 
 const ContactsWrapper = styled.div`
     width: 100%;
     height: 600px;
-    margin: 20px 0 80px 0;
+    margin: 40px 0 40px 0;
     border-radius: 24px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     overflow: hidden;
+
+    @media (${WINDOW_WIDTH.MOBILE}) {
+        width: 90%;
+        height: 400px;
+        ${WINDOW_WIDTH.SUPER_MINI};
+    }
 `
 
 const MapContainer = styled.div`
@@ -38,25 +44,56 @@ const InfoContainer = styled.div`
     ${WIX_MADEFOR_TEXT_WEIGHT('400')};
     letter-spacing: -0.5px;
     font-size: 18px;
+
+    @media (${WINDOW_WIDTH.MOBILE}) {
+        font-size: 14px;
+    }
 `;
 
 const HeaderLogo = styled.img`
     width: 220px;
-    margin: -30px 0 30px 0;
+    margin: 0px 0 30px 0;
+
+    @media (${WINDOW_WIDTH.MOBILE}) {
+        width: 160px;
+    }
 `;
 
 const Description = styled.div`
     width: 100%;
+    margin: 0 0 20px 0;
+
+    @media (max-width: 800px) {
+        display: none;
+    }
+`
+
+const SalonBox = styled.div`
+    position: relative;
+    width: 50%;
+    height: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+
+    @media (${WINDOW_WIDTH.MOBILE}) {
+        display: none;
+    }
 `
 
 const SalonImg = styled.img`
-    width: 300px;
-    border-radius: 12px;
+    position: absolute;
+    bottom: 0;
+    left: 0px;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
+    object-position: bottom;
+    z-index: 0;
 `
 
 const InfoBottom = styled.div`
     width: 100%;
+    min-height: 50%;
     display: flex;
     justify-content: space-between;
 `;
@@ -69,13 +106,19 @@ const Info = styled.div`
     flex-wrap: wrap;
     justify-content: center;
     font-size: 18px;
+
+    @media (${WINDOW_WIDTH.MOBILE}) {
+        width: 100%;
+        margin: -30px 0 0 0;
+        font-size: 14px;
+    }
 `
 
 const InfoPoint = styled.div`
     width: 100%;
     display: flex;
     justify-content: center;
-    // font-size: 20px;
+    align-items: center;
 `;
 
 const Icon = styled.img`
@@ -96,6 +139,10 @@ const InfoDescription = styled.div`
     width: 100%;
     ${WIX_MADEFOR_TEXT_WEIGHT('500')};
     font-size: 20px;
+
+    @media (${WINDOW_WIDTH.MOBILE}) {
+        font-size: 14px;
+    }
 `;
 
 export default function ContactsComponent() {
@@ -120,7 +167,9 @@ export default function ContactsComponent() {
                     Удобный дом невозможно представить без качественных полов. Компания Quick-Step следует этому постулату с 1990 года. Сегодня мы предлагаем широкий ассортимент долговечного ламината и виниловых напольных покрытий.
                 </Description>
                 <InfoBottom>
-                    <SalonImg src="img/salon/salon.jpg" alt="Salon" /> 
+                    <SalonBox>
+                        <SalonImg src="img/salon/salon.jpg" alt="Salon" /> 
+                    </SalonBox>
                     <Info>
                         {infoPoints.map((point, index )=> (
                             <InfoPoint key={`info-point-${index}`}>

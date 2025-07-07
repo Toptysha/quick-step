@@ -7,20 +7,22 @@ import { CatalogButtonComponent } from "@/components";
 const FloorsWrapper = styled.div`
     width: 100%;
     height: 350px;
-    margin: 50px 0 0 0;
+    margin: 20px 0 0 0;
     display: flex;
     flex-wrap: wrap;
 
     @media (${WINDOW_WIDTH.MOBILE}) {
         width: 90%;
         ${WINDOW_WIDTH.SUPER_MINI};
-        height: 900px;
+        height: 980px;
+        margin: 10px 0 0 0;
     }
 `
 
 const Header = styled.div`
     width: 100%;
     height: 80px;
+    margin: 0 0 40px 0;
     color: ${COLORS.CORPORATE_BLUE};
     font-size: 30px;
     ${WIX_MADEFOR_TEXT_WEIGHT('600')};
@@ -32,6 +34,7 @@ const Header = styled.div`
         height: 60px;
         font-size: 20px;
         letter-spacing: -1px;
+        margin: 0;
     }
 
     @media (max-width: 480px) {
@@ -49,6 +52,7 @@ const FloorsBlock = styled.div`
     display: flex;
     justify-content: space-between;
     border-radius: 24px;
+    margin: -50px 0 0 0;
 
     @media (${WINDOW_WIDTH.MOBILE}) {
         height: 850px;
@@ -64,7 +68,8 @@ const Floor = styled.div`
     display: flex;
     // justify-content: center;
     flex-wrap: wrap;
-    padding: 0 0 20px 0;
+    margin: 0 0 40px 0;
+    padding: 0 0 10px 0;
     border-radius: 24px;
     box-shadow: 4px -4px 12px rgba(0, 0, 0, 0.1);
     color: ${COLORS.CORPORATE_BLUE};

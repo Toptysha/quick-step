@@ -6,20 +6,21 @@ import styled from "styled-components";
 const AdvantagesWrapper = styled.div`
     width: 100%;
     height: 350px;
-    margin: 50px 0 0 0;
+    margin: 30px 0 0 0;
     display: flex;
     flex-wrap: wrap;
 
     @media (${WINDOW_WIDTH.MOBILE}) {
         width: 90%;
         ${WINDOW_WIDTH.SUPER_MINI};
-        height: 900px;
+        height: 980px;
     }
 `
 
 const Header = styled.div`
     width: 100%;
     height: 80px;
+    margin: 0 0 40px 0;
     color: ${COLORS.CORPORATE_BLUE};
     font-size: 30px;
     ${WIX_MADEFOR_TEXT_WEIGHT('600')};
@@ -31,6 +32,7 @@ const Header = styled.div`
         height: 60px;
         font-size: 20px;
         letter-spacing: -1px;
+        margin: 0;
     }
 
     @media (max-width: 480px) {
@@ -48,6 +50,7 @@ const AdvantagesBlock = styled.div`
     display: flex;
     justify-content: space-between;
     border-radius: 24px;
+    margin: -60px 0 0 0;
 
     @media (${WINDOW_WIDTH.MOBILE}) {
         height: 850px;
@@ -63,6 +66,7 @@ const Advantage = styled.div`
     display: flex;
     justify-content: center;
     align-items: flex-end;
+    margin: 0 0 40px 0;
     padding: 0 0 10px 0;
     border-radius: 24px;
     box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.1);

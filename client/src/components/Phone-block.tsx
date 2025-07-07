@@ -4,11 +4,14 @@ import { COLORS, WIX_MADEFOR_TEXT_WEIGHT } from "@/constants";
 import styled from "styled-components";
 
 const PhoneWrapper = styled.div<{ $isMini?: boolean }>`
+  box-sizing: border-box;
   width: ${({ $isMini }) => $isMini ? '160px' : '230px'};
   height: 30px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin: ${({ $isMini }) => $isMini ? '0' : '0 0 10px 0'};
+  font-size: ${({ $isMini }) => $isMini ? '10px' : '14px'};
 `;
 
 const PhoneIcon = styled.img<{ $isMini?: boolean }>`
@@ -28,7 +31,11 @@ const PhoneContainer = styled.div<{ $isMini?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-`;
+`
+
+const LinksIcons = styled.a`
+  margin: 0 0 0 10px;
+`
 
 const OrderCall = styled.button<{ $isMini?: boolean }>`
     width: ${({ $isMini }) => $isMini ? '160px' : '230px'};
@@ -55,12 +62,12 @@ export default function PhoneBlock({srcPhone, isMini = false}: {srcPhone?: strin
                 <PhoneIcon $isMini={isMini} src={srcPhone || "/icons/social/phone-blue-icon.svg"} alt="Phone" />
                 <span>+7 (999) 721-57-40</span>
             </PhoneContainer>
-            <a href="https://wa.me/+79997215740" target="_blank" rel="noopener noreferrer">
+            <LinksIcons href="https://wa.me/+79997215740" target="_blank" rel="noopener noreferrer">
                 <WhatsappIcon $isMini={isMini} src="/icons/social/whatsapp-icon.svg" alt="Whatsapp" />
-            </a>
-            <a href="https://t.me/+79997215740" target="_blank" rel="noopener noreferrer">
+            </LinksIcons>
+            <LinksIcons href="https://t.me/+79997215740" target="_blank" rel="noopener noreferrer">
                 <TelegramIcon $isMini={isMini} src="/icons/social/telegram-icon.svg" alt="Telegram" />
-            </a>
+            </LinksIcons>
         </PhoneWrapper>
         <OrderCall $isMini={isMini}>Заказать звонок</OrderCall>
     </>

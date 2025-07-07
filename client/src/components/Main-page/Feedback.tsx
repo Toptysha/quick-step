@@ -1,26 +1,47 @@
 'use client';
 
 import styled from "styled-components";
-import { COLORS, WIX_MADEFOR_TEXT_WEIGHT } from "@/constants";
+import { COLORS, WINDOW_WIDTH, WIX_MADEFOR_TEXT_WEIGHT } from "@/constants";
 import { CatalogButtonComponent } from "@/components";
 
 const FeedbackWrapper = styled.div`
-    // background-color: ${COLORS.CORPORATE_BLUE};
     box-shadow: 4px 0px 12px rgba(0, 0, 0, 0.1);
     width: 100%;
     height: 400px;
-    margin: 20px 0 80px 0;
+    margin: 40px 0 0 0;
     border-radius: 24px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     overflow: hidden;
+
+    @media (${WINDOW_WIDTH.MOBILE}) {
+        width: 90%;
+        ${WINDOW_WIDTH.SUPER_MINI};
+    }
 `
 
-const PhotoBox = styled.img`
+const PhotoBox = styled.div`
+    position: relative;
     width: 50%;
     height: 100%;
     border-radius: 24px 250px 24px 24px;
+    overflow: hidden;
+    
+    @media (max-width: 660px) {
+        display: none;
+    }
+`
+
+const Cover = styled.img`
+    position: absolute;
+    top: 0;
+    right: 0px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: right;
+    z-index: 0;
 `
 
 const FeedbackBox = styled.div`
@@ -35,6 +56,14 @@ const FeedbackBox = styled.div`
     ${WIX_MADEFOR_TEXT_WEIGHT('400')};
     letter-spacing: -0.5px;
     font-size: 20px;
+
+    @media (${WINDOW_WIDTH.MOBILE}) {
+        font-size: 16px;
+    }
+
+    @media (max-width: 660px) {
+        width: 100%;
+    }
 `
 
 const FeedbackHeader = styled.div`
@@ -44,6 +73,11 @@ const FeedbackHeader = styled.div`
     ${WIX_MADEFOR_TEXT_WEIGHT('600')};
     font-size: 26px;
     letter-spacing: -1px;
+
+    @media (${WINDOW_WIDTH.MOBILE}) {
+        font-size: 18px;
+        ${WIX_MADEFOR_TEXT_WEIGHT('700')};
+    }
 `
 
 const FeedbackDescription = styled.div`
@@ -95,12 +129,16 @@ const FeedbackSubmit = styled.div`
 const FeedbackCheckboxBlock = styled.label`
     cursor: pointer;
     width: 50%;
+    margin: 0 5px;
     display: flex;
-    
 `
 
 const FeedbackCheckboxText = styled.div`
     font-size: 14px;
+
+    @media (${WINDOW_WIDTH.MOBILE}) {
+        font-size: 10px;
+    }
 `
 
 const FeedbackCheckbox = styled.input`
@@ -119,7 +157,9 @@ const PrivacyPolicy = styled.a`
 export default function FeedbackComponent() {
     return (
         <FeedbackWrapper>
-            <PhotoBox src='img/feedback-cover/feedback-cover.webp' alt='Feedback' />
+            <PhotoBox>
+                <Cover src='img/feedback-cover/feedback-cover.webp' alt='Feedback' />
+            </PhotoBox>
             <FeedbackBox>
                 <FeedbackHeader>
                     НУЖНА  ПОМОЩЬ  В  ВЫБОРЕ   ИЛИ  КОНСУЛЬТАЦИЯ?

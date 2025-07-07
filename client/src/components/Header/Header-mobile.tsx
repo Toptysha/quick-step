@@ -77,7 +77,6 @@ const PhoneBlockWrapper = styled.div`
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  font-size: 10px;
 
   @media (max-width: 590px) {
     display: none;
