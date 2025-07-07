@@ -26,6 +26,7 @@ const MapContainer = styled.div`
 
     @media (${WINDOW_WIDTH.MOBILE}) {
         width: 100%;
+        height: 400px;
     }    
 `;
 
