@@ -19,7 +19,7 @@ const Overlay = styled.div`
 
   @media (${WINDOW_WIDTH.MOBILE}) {
     background-color: white;
-    align-items: flex-end;
+    // align-items: flex-end;
   }
 `;
 
@@ -37,7 +37,7 @@ const ModalContainer = styled.div`
   @media (${WINDOW_WIDTH.MOBILE}) {
     width: 100%;
     ${WINDOW_WIDTH.SUPER_MINI};
-    height: 60%;
+    height: 90%;
     border-radius: 16px 16px 0 0;
     max-height: 100%;
   }

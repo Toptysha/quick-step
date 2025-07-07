@@ -14,9 +14,7 @@ const ContactsWrapper = styled.div`
     overflow: hidden;
 
     @media (${WINDOW_WIDTH.MOBILE}) {
-        width: 90%;
-        height: 400px;
-        ${WINDOW_WIDTH.SUPER_MINI};
+        display: none;
     }
 `
 
@@ -25,6 +23,10 @@ const MapContainer = styled.div`
     height: 100%;
     border-radius: 24px;
     overflow: hidden;
+
+    @media (${WINDOW_WIDTH.MOBILE}) {
+        width: 100%;
+    }    
 `;
 
 const MapIframe = styled.iframe`
@@ -76,7 +78,10 @@ const SalonBox = styled.div`
     overflow: hidden;
 
     @media (${WINDOW_WIDTH.MOBILE}) {
-        display: none;
+        width: 100%;
+        height: 400px;
+        background: green;
+        margin: 0 0 20px 0;
     }
 `
 
@@ -96,6 +101,11 @@ const InfoBottom = styled.div`
     min-height: 50%;
     display: flex;
     justify-content: space-between;
+
+    @media (${WINDOW_WIDTH.MOBILE}) {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
 `;
 
 const Info = styled.div`
@@ -119,6 +129,11 @@ const InfoPoint = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+
+    @media (${WINDOW_WIDTH.MOBILE}) {
+        width: 100%;
+        margin: 20px auto;
+    }
 `;
 
 const Icon = styled.img`
@@ -129,6 +144,10 @@ const Icon = styled.img`
 
 const TextWrapper = styled.div`
     width: 80%;
+
+    // @media (${WINDOW_WIDTH.MOBILE}) {
+    //     width: auto;
+    // }
 `
 
 const InfoTitle = styled.div`
@@ -145,33 +164,84 @@ const InfoDescription = styled.div`
     }
 `;
 
+const ContactsWrapperMobile = styled.div`
+    width: 90%;
+    height: 1200px;
+    margin: 40px 0 40px 0;
+    border-radius: 24px;
+    display: none;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+
+    @media (${WINDOW_WIDTH.MOBILE}) {
+        display: flex;
+        ${WINDOW_WIDTH.SUPER_MINI};
+    }
+`
+
+const HeaderLogoMobileDiv = styled.div`
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`
+
 export default function ContactsComponent() {
     const infoPoints = [
         {title: 'Адрес магазина:', description: 'г. Воронеж, ул. Донбасская, 5', src: 'icons/decor-elements/location-pin.svg'},
         {title: 'Наш телефон:', description: '+7 (999) 721-57-40', src: 'icons/social/phone-icon.svg'},
-        {title: 'Время работы:', description: `Пн-Пт: 10:00 - 19:00 \n Сб-Вс: 10:00 - 18:00`, src: 'icons/decor-elements/clock.svg'},
+        {title: 'Время работы:', description: <>Пн-Пт: 10:00 - 19:00<br/>Сб-Вс: 10:00 - 18:00</>, src: 'icons/decor-elements/clock.svg'},
     ]
 
     return (
-        <ContactsWrapper>
-            <MapContainer>
-                <MapIframe
-                    src="https://yandex.ru/map-widget/v1/?ll=39.181869%2C51.673449&mode=search&poi%5Bpoint%5D=39.181957%2C51.673277&poi%5Buri%5D=ymapsbm1%3A%2F%2Forg%3Foid%3D120254340909&z=16.9"
-                    allowFullScreen
-                    title="Yandex Map"
-                />
-            </MapContainer>
-            <InfoContainer>
-                <HeaderLogo src="/icons/header-logo.svg" alt="Logo" />
-                <Description>
-                    Удобный дом невозможно представить без качественных полов. Компания Quick-Step следует этому постулату с 1990 года. Сегодня мы предлагаем широкий ассортимент долговечного ламината и виниловых напольных покрытий.
-                </Description>
+        <>
+            <ContactsWrapper>
+                <MapContainer>
+                    <MapIframe
+                        src="https://yandex.ru/map-widget/v1/?ll=39.181869%2C51.673449&mode=search&poi%5Bpoint%5D=39.181957%2C51.673277&poi%5Buri%5D=ymapsbm1%3A%2F%2Forg%3Foid%3D120254340909&z=16.9"
+                        allowFullScreen
+                        title="Yandex Map"
+                    />
+                </MapContainer>
+                <InfoContainer>
+                    <HeaderLogo src="/icons/header-logo.svg" alt="Logo" />
+                    <Description>
+                        Удобный дом невозможно представить без качественных полов. Компания Quick-Step следует этому постулату с 1990 года. Сегодня мы предлагаем широкий ассортимент долговечного ламината и виниловых напольных покрытий.
+                    </Description>
+                    <InfoBottom>
+                        <SalonBox>
+                            <SalonImg src="img/salon/salon.jpg" alt="Salon" /> 
+                        </SalonBox>
+                        <Info>
+                            {infoPoints.map((point, index ) => (
+                                <InfoPoint key={`info-point-${index}`}>
+                                    <Icon src={point.src} alt="icon" />
+                                    <TextWrapper>
+                                        <InfoTitle>
+                                            {point.title}
+                                        </InfoTitle>
+                                        <InfoDescription>
+                                            {point.description}
+                                        </InfoDescription>
+                                    </TextWrapper>
+                                </InfoPoint>
+                            ))}
+                        </Info>
+                    </InfoBottom>
+                </InfoContainer>
+            </ContactsWrapper>
+            <ContactsWrapperMobile>
+                <HeaderLogoMobileDiv>
+                    <HeaderLogo src="/icons/header-logo.svg" alt="Logo" />
+                </HeaderLogoMobileDiv>
                 <InfoBottom>
                     <SalonBox>
                         <SalonImg src="img/salon/salon.jpg" alt="Salon" /> 
                     </SalonBox>
                     <Info>
-                        {infoPoints.map((point, index )=> (
+                        {infoPoints.map((point, index ) => (
                             <InfoPoint key={`info-point-${index}`}>
                                 <Icon src={point.src} alt="icon" />
                                 <TextWrapper>
@@ -186,7 +256,14 @@ export default function ContactsComponent() {
                         ))}
                     </Info>
                 </InfoBottom>
-            </InfoContainer>
-        </ContactsWrapper>
+                <MapContainer>
+                    <MapIframe
+                        src="https://yandex.ru/map-widget/v1/?ll=39.181869%2C51.673449&mode=search&poi%5Bpoint%5D=39.181957%2C51.673277&poi%5Buri%5D=ymapsbm1%3A%2F%2Forg%3Foid%3D120254340909&z=16.9"
+                        allowFullScreen
+                        title="Yandex Map"
+                    />
+                </MapContainer>
+            </ContactsWrapperMobile>
+        </>
     )
 }

@@ -19,6 +19,10 @@ const FeedbackWrapper = styled.div`
         width: 90%;
         ${WINDOW_WIDTH.SUPER_MINI};
     }
+
+    @media (max-width: 660px) {
+        margin: 0;
+    }
 `
 
 const PhotoBox = styled.div`
