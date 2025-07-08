@@ -7,13 +7,13 @@ import { Cover } from "@/interfaces";
 import { CatalogButtonComponent } from "@/components";
 
 const WallpaperWrapper = styled.div`
+  position: relative;
   width: 100%;
   height: 600px;
   min-width: 1100px;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
   border-radius: 24px;
   overflow: hidden;
   // background: black;
@@ -46,6 +46,7 @@ const WallpaperDescription = styled.div<{
   $active?: boolean;
   $index?: number;
 }>`
+  // border: 1px solid black;
   position: absolute;
   top: ${(props) => (props.$index! % 2 === 0 ? "350px" : "70px")};
   left: 30px;
@@ -71,11 +72,42 @@ const WallpaperDescription = styled.div<{
     letter-spacing: -0.5px;
     ${WIX_MADEFOR_TEXT_WEIGHT('500')};
   }
+`
+
+const BackgroundDescriptionWrapper = styled.div`
+  text-shadow: #000 1px 0 40px;
+  @media (${WINDOW_WIDTH.MOBILE}) {
+    text-shadow: #000 1px 0 10px;
+  }
 `;
+
+// const BackgroundWrapper = styled.div`
+//   position: absolute;
+//   top: 10px;
+//   left: 0;
+//   z-index: -1;
+//   display: flex;
+//   flex-direction: column;
+//   gap: 0px;
+// `;
+
+// const BackgroundWrapperLine = styled.div`
+//   margin: 4px 0 -6px 0;
+//   display: flex;
+// `;
+
+// const BackgroundImg = styled.img`
+//   width: 100px;
+//   height: 60px;
+//   margin: 0 0 0 -24px;
+//   object-fit: fill;
+
+// `;
 
 export default function WallpaperComponent({wallpapers}: {wallpapers: Cover[]}) {
 
   const [currentIndex, setCurrentIndex] = useState(0);
+  // const [refs, metrics] = useTextMetrics(wallpapers.map(w => w.description as string));
 
   const handleNext = () => {
     setCurrentIndex((prev) => (prev + 1) % wallpapers.length);
@@ -90,24 +122,40 @@ export default function WallpaperComponent({wallpapers}: {wallpapers: Cover[]}) 
 
   return (
         <WallpaperWrapper>
-          {wallpapers.map((img, index) => (
-              <WallpaperImage
-                key={img.id}
-                src={img.src}
-                alt={img.alt}
-                $active={index === currentIndex}
-                onClick={() => handleNext()}
-              />
-          ))}
-          {wallpapers.map((img, index) => (
-            <WallpaperDescription
-              key={img.id}
-              $active={index === currentIndex}
-              $index={index}
-            >
-              {img.description}
-            </WallpaperDescription>
-          ))}
+          {wallpapers.map((wallpaperInfo, index) => {
+            return (
+              <div key={wallpaperInfo.id}>
+                <WallpaperImage
+                  src={wallpaperInfo.src}
+                  alt={wallpaperInfo.alt}
+                  $active={index === currentIndex}
+                  onClick={() => handleNext()}
+                />
+                <WallpaperDescription
+                  $active={index === currentIndex}
+                  $index={index}
+                  // ref={el => {refs.current[index] = el; }}
+                >
+                    {/* <BackgroundWrapper>
+                      {Array.from({ length: metrics[index]?.lineCount || 1 }).map((_, lineIdx) => (
+                        <BackgroundWrapperLine key={lineIdx}>
+                          {Array.from({ length: metrics[index]?.bgCount || 0 }).map((_, bgIdx) => (
+                            <BackgroundImg
+                              key={`${lineIdx}-${bgIdx}`}
+                              src="/icons/text-background.svg"
+                              alt="Background"
+                            />
+                          ))}
+                        </BackgroundWrapperLine>
+                      ))}
+                    </BackgroundWrapper> */}
+                    <BackgroundDescriptionWrapper>
+                      {wallpaperInfo.description}
+                    </BackgroundDescriptionWrapper>
+                </WallpaperDescription>
+              </div>
+            )
+          })}
           <CatalogButtonComponent />
         </WallpaperWrapper>
   );

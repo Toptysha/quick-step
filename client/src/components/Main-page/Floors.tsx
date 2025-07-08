@@ -72,7 +72,7 @@ const Floor = styled.div`
     padding: 0 0 10px 0;
     border-radius: 24px;
     box-shadow: 4px -4px 12px rgba(0, 0, 0, 0.1);
-    color: ${COLORS.CORPORATE_BLUE};
+    color: ${COLORS.CORPORATE_GRAY};
     font-size: 24px;
     ${WIX_MADEFOR_TEXT_WEIGHT('600')};
     letter-spacing: -0.5px;
@@ -85,18 +85,29 @@ const Floor = styled.div`
 `
 
 const TitleBox = styled.div`
-    height: 50px;
-    padding: 20px 60px 0px 20px;
-    border-radius: 24px 80px 24px 0;
-    // background-color: ${COLORS.CORPORATE_GRAY};
+    box-sizing: border-box;
+    position: relative;
+    height: 40px;
+    padding: 10px 0px 0px 10px;
+    // border-radius: 24px 80px 24px 0;
     ${WIX_MADEFOR_TEXT_WEIGHT('700')};
     z-index: 1;
+    text-shadow: #000 1px 0 20px;
 
     @media (${WINDOW_WIDTH.MOBILE}) {
         font-size: 24px;
         ${WIX_MADEFOR_TEXT_WEIGHT('700')};
-        padding: 30px 40px 0px 10px;
+        padding: 10px 0px 0px 20px;
     }
+`
+
+const BackgroundImg = styled.img`
+    position: absolute;
+    top: 5px;
+    width: 90px;
+    height: 100%;
+    object-fit: fill;
+    z-index: -1;
 `
 
 const CoverBox = styled.img`
@@ -124,6 +135,8 @@ export default function FloorsComponent() {
         {title: 'АКСЕССУАРЫ', src: '/img/floor/floor-3.webp'},
     ]
 
+    // const [refsCurrent, bgCounts] = useTextBackground(floorBoxContent.length)
+
     return (
         <FloorsWrapper>
             <Header>
@@ -131,18 +144,28 @@ export default function FloorsComponent() {
                 ПОЛЫ  QUICK-STEP
             </Header> 
             <FloorsBlock>
-                {floorBoxContent.map((item, index) => (
-                    <Floor key={`Floor-${index}`}>
-                        <TitleBox>
-                            {item.title}
-                        </TitleBox>
-                        <CoverBox src={item.src} alt="Logo" />
-                        <ButtonWrapper>
-                            <CatalogButtonComponent width="180px" />
-                        </ButtonWrapper>
-                    </Floor>
-                ))}
-            </FloorsBlock>
+    {floorBoxContent.map((item, index) => (
+        <Floor key={`Floor-${index}`}>
+            <TitleBox 
+                // ref={el => {refsCurrent[index] = el; }}
+            >
+                {/* {Array.from({ length: bgCounts[index] as number || 0 }).map((_, i) => (
+                    <BackgroundImg
+                        key={i}
+                        style={{ left: `${i * 54 - 5}px` }} // -5px для первого, шаг 45px
+                        src="/icons/text-background.svg"
+                        alt="Background"
+                    />
+                ))} */}
+                {item.title}
+            </TitleBox>
+            <CoverBox src={item.src} alt="Logo" />
+            <ButtonWrapper>
+                <CatalogButtonComponent width="180px" />
+            </ButtonWrapper>
+        </Floor>
+    ))}
+</FloorsBlock>
         </FloorsWrapper>
     )
 }

@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "../styles/globals.css";
 import StyledComponentsRegistry from "./styled-components-registry";
-import { Footer, Header, Modal } from "@/components";
+import { Footer, Header, Loader, Modal } from "@/components";
 import { ReduxProvider } from "@/providers";
 
 export const metadata: Metadata = {
@@ -66,16 +66,76 @@ export const viewport: Viewport = {
   themeColor: '#ffffff',
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="ru" className="loading">
+      <head>
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+              html.loading, html.loading body {
+                overflow: hidden;
+              }
+
+              #preloader-html {
+                position: fixed;
+                inset: 0;
+                background-color: #ffffff;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 99999;
+              }
+
+              .preloader-loaderVision {
+                width: 50px;
+                aspect-ratio: 1;
+                --_c: no-repeat radial-gradient(farthest-side, #EC008C 92%, #0000);
+                background:
+                  var(--_c) top,
+                  var(--_c) left,
+                  var(--_c) right,
+                  var(--_c) bottom;
+                background-size: 12px 12px;
+                animation: l7 1s infinite;
+              }
+
+              @keyframes l7 {
+                to {
+                  transform: rotate(0.5turn);
+                }
+              }
+            `,
+          }}
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              document.addEventListener("DOMContentLoaded", function () {
+                document.documentElement.classList.add("loading");
+              });
+
+              window.addEventListener("load", function () {
+                document.documentElement.classList.remove("loading");
+                const el = document.getElementById("preloader-html");
+                if (el) {
+                  el.style.transition = "opacity 0.4s ease";
+                  el.style.opacity = "0";
+                  setTimeout(() => el.remove(), 400);
+                }
+              });
+            `,
+          }}
+        />
+      </head>
       <body>
+        <div id="preloader-html">
+          <div className="preloader-loaderVision"></div>
+        </div>
+
         <ReduxProvider>
           <StyledComponentsRegistry>
+            <Loader />
             <Header />
             {children}
             <Footer />

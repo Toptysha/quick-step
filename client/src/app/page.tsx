@@ -3,6 +3,9 @@
 import styled from "styled-components";
 import { AdvantagesComponent, ContactsComponent, FeedbackComponent, FloorsComponent, InfoComponent, MiddleLogoComponent, WallpaperComponent } from "@/components";
 import { WINDOW_WIDTH } from "@/constants";
+import { useAppDispatch } from "@/redux/store";
+import { useEffect } from "react";
+import { closeLoader } from "@/redux/reducers";
 
 const BodyWrapper = styled.div`
   width: 100%;
@@ -12,7 +15,6 @@ const BodyWrapper = styled.div`
 `;
 
 const BodyWrapperMini = styled.div`
-  // background: red;
   width: 1200px;
   min-width: 1100px;
   display: flex;
@@ -26,6 +28,26 @@ const BodyWrapperMini = styled.div`
 `;
 
 export default function Home() {
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+  const preloadImages = async () => {
+    const images = [...document.querySelectorAll("img")];
+    await Promise.all(
+      images.map(
+        (img) =>
+          new Promise((resolve) => {
+            if (img.complete) return resolve(true);
+            img.onload = img.onerror = resolve;
+          })
+      )
+    );
+    setTimeout(() => dispatch(closeLoader()), 300); // 👈 задержка для плавности
+  };
+
+  preloadImages();
+}, []);
+
   const wallpapers = [
     { id: 1, src: "/img/main-cover/1.webp", alt: "Wallpaper 1", description: 'Высококачественные напольные покрытия: ламинат и винил' },
     { id: 2, src: "/img/main-cover/2.webp", alt: "Wallpaper 2", description: 'Комфорт и легкость, красота и уют' },
