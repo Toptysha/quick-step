@@ -1,7 +1,7 @@
 "use client";
 
 import styled from "styled-components";
-import { COLORS, WINDOW_WIDTH, WIX_MADEFOR_TEXT_WEIGHT } from "@/constants";
+import { COLORS, URL, WINDOW_WIDTH, WIX_MADEFOR_TEXT_WEIGHT } from "@/constants";
 import { HeaderMobile, PhoneBlock, SearchLine } from "@/components";
 import { HeaderLinks } from "@/interfaces";
 
@@ -91,15 +91,12 @@ const CenterBlockContainer = styled.div`
 const Navigation = styled.nav`
     width: 450px;
     height: 40%;
-    // border: 1px solid black;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    // padding: 0px 40px;
 `
 
 const NavLink = styled.a`
-    // border: 1px solid black;
     font-size: 20px;
     color: ${COLORS.CORPORATE_BLUE};
     ${WIX_MADEFOR_TEXT_WEIGHT('400')};
@@ -135,10 +132,10 @@ const BucketCount = styled.div`
 
 export default function Header() {
   const links: HeaderLinks[] = [
-    {title: 'Главная', href: '/'},
-    {title: 'Каталог', href: '/catalog'},
-    {title: 'Клиентам', href: '/for_clients'},
-    {title: 'Контакты', href: '/contacts'},
+    {title: 'Главная', href: URL.HOME},
+    {title: 'Каталог', href: URL.CATALOG},
+    {title: 'Клиентам', href: URL.FOR_CLIENTS},
+    {title: 'Контакты', href: URL.CONTACTS},
   ]
 
   return (

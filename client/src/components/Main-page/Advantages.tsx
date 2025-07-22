@@ -36,7 +36,7 @@ const Header = styled.div`
     }
 
     @media (max-width: 480px) {
-        font-size: 12px;
+        font-size: 16px;
     }
 `
 

@@ -1,3 +1,5 @@
 export * from './redux-store'
+export * from './product'
+export * from './product-options-switcher'
 export * from './cover'
 export * from './header-links'

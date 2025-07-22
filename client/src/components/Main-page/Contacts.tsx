@@ -191,9 +191,9 @@ const HeaderLogoMobileDiv = styled.div`
 
 export default function ContactsComponent() {
     const infoPoints = [
-        {title: 'Адрес магазина:', description: 'г. Воронеж, ул. Донбасская, 5', src: 'icons/decor-elements/location-pin.svg'},
-        {title: 'Наш телефон:', description: '+7 (999) 721-57-40', src: 'icons/social/phone-icon.svg'},
-        {title: 'Время работы:', description: <>Пн-Пт: 10:00 - 19:00<br/>Сб-Вс: 10:00 - 18:00</>, src: 'icons/decor-elements/clock.svg'},
+        {title: 'Адрес магазина:', description: 'г. Воронеж, ул. Донбасская, 5', src: '/icons/decor-elements/location-pin.svg'},
+        {title: 'Наш телефон:', description: '+7 (999) 721-57-40', src: '/icons/social/phone-icon.svg'},
+        {title: 'Время работы:', description: <>Пн-Пт: 10:00 - 19:00<br/>Сб-Вс: 10:00 - 18:00</>, src: '/icons/decor-elements/clock.svg'},
     ]
 
     return (

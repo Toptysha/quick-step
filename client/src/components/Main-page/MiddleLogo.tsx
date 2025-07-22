@@ -74,7 +74,7 @@ const InfoBoxDescription = styled.div`
 export default function MiddleLogoComponent() {
     return (
         <MiddleLogoWrapper>
-            <Logo src="icons/header-logo-white.svg" alt="Logo" /> 
+            <Logo src="/icons/header-logo-white.svg" alt="Logo" /> 
             <InfoBox>
                 <InfoBoxTitle>
                     СОЗДАЙТЕ  АТМОСФЕРУ   УЮТА  В  ДОМЕ

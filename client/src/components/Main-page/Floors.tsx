@@ -38,7 +38,7 @@ const Header = styled.div`
     }
 
     @media (max-width: 480px) {
-        font-size: 12px;
+        font-size: 16px;
     }
 `
 
@@ -101,15 +101,6 @@ const TitleBox = styled.div`
     }
 `
 
-const BackgroundImg = styled.img`
-    position: absolute;
-    top: 5px;
-    width: 90px;
-    height: 100%;
-    object-fit: fill;
-    z-index: -1;
-`
-
 const CoverBox = styled.img`
     position: absolute;
     bottom: 0;
@@ -146,17 +137,7 @@ export default function FloorsComponent() {
             <FloorsBlock>
     {floorBoxContent.map((item, index) => (
         <Floor key={`Floor-${index}`}>
-            <TitleBox 
-                // ref={el => {refsCurrent[index] = el; }}
-            >
-                {/* {Array.from({ length: bgCounts[index] as number || 0 }).map((_, i) => (
-                    <BackgroundImg
-                        key={i}
-                        style={{ left: `${i * 54 - 5}px` }} // -5px для первого, шаг 45px
-                        src="/icons/text-background.svg"
-                        alt="Background"
-                    />
-                ))} */}
+            <TitleBox>
                 {item.title}
             </TitleBox>
             <CoverBox src={item.src} alt="Logo" />

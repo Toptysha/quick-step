@@ -172,7 +172,7 @@ export default function Footer() {
         <FooterWrapper>
             <FooterDiv>
                 <LeftBlock>
-                    <Logo src="icons/header-logo-white.svg" alt="Logo" />
+                    <Logo src="/icons/header-logo-white.svg" alt="Logo" />
                     <MiniLogo src="/icons/logo.svg" alt="Logo" />
                     © 2021 Quick-Step
                 </LeftBlock>
@@ -189,7 +189,7 @@ export default function Footer() {
                 </MiddleBlock>
                 <RightBlock>
                     <InfoPoint>
-                        <Icon src='icons/decor-elements/clock-white.svg' alt="icon" />
+                        <Icon src='/icons/decor-elements/clock-white.svg' alt="icon" />
                         <TextWrapper>
                             <InfoTitle>
                                 Время работы:
