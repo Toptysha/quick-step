@@ -215,7 +215,7 @@ export default function ProductPage({ params }: { params: Promise<{ productArtic
     return (
         <BodyWrapper>
             <BodyWrapperMini>
-                {/* <MainInfoBlock>
+                <MainInfoBlock>
                     <PhotoBlock>
                         <PhotoGallery photos={product.photos} cover={product.cover} />
                         {product.description &&  <MiniDescriptionBlock>
@@ -236,7 +236,7 @@ export default function ProductPage({ params }: { params: Promise<{ productArtic
                         </PriceDescription>
                         <FlooringCalculator m2PerPack={product.floorSize?.mSqareOfPack?.value as number} packPrice={product.priceOfPack as number} />
                     </PricesAndSizesBlock>
-                </MainInfoBlock> */}
+                </MainInfoBlock>
 
                 <MainInfoMobileBlock>
                     <PricesAndSizesBlock>
