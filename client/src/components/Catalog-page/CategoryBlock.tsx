@@ -80,7 +80,6 @@ const CategoriesMobileWrapper = styled.div`
     display: none;
 
     @media (${WINDOW_WIDTH.MOBILE}) {
-    border: 1px solid black;
         display: flex;
         width: 90%;
         ${WINDOW_WIDTH.SUPER_MINI};
