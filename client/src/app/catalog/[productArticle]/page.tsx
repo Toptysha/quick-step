@@ -135,6 +135,7 @@ const SupInfoBlock = styled.div`
 
     @media (${WINDOW_WIDTH.MOBILE}) {
         margin: 0;
+        width: 90%;
     }
 `;
 

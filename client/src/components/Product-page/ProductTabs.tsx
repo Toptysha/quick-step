@@ -34,6 +34,7 @@ const TabButton = styled.button<{ $active: boolean }>`
 `;
 
 const TabContent = styled.div`
+    // background: green;
     padding: 24px;
     border-radius: 24px;
     box-shadow: 0 0px 12px rgba(0, 0, 0, 0.3);
@@ -44,11 +45,14 @@ const TabContent = styled.div`
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 16px;
+  width: 100%;
+  box-sizing: border-box;
 `;
 
 const Block = styled.div`
+  box-sizing: border-box;
   background: rgba(252, 252, 252, 1);
   border-radius: 16px;
   padding: 20px;
