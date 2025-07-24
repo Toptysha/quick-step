@@ -7,7 +7,7 @@ import { Dispatch, SetStateAction } from "react";
 
 const CategoriesWrapper = styled.div`
     width: 100%;
-    height: 350px;
+    // height: 350px;
     margin: 20px 0 0 0;
     display: flex;
     justify-content: space-between;
@@ -18,18 +18,15 @@ const CategoriesWrapper = styled.div`
 `
 
 const CategoryBlock = styled.div`
-    // border: 1px solid black;
     cursor: pointer;
     width: 300px;
-    height: 350px;
 
     @media (${WINDOW_WIDTH.MOBILE}) {
-        // border: 1px solid black;
-        font-size: 20px;
-        width: 90%;
-        height: auto;
+        width: 100%;
+        margin: 10px 0 0 0;
         display: flex;
         justify-content: center;
+        font-size: 20px;
         ${WIX_MADEFOR_TEXT_WEIGHT('400')};
     }
 `
@@ -51,7 +48,6 @@ const CategoryCover = styled.img<{ $isActive?: boolean }>`
 
 const CategoryName = styled.div<{ $isActive?: boolean }>`
     padding: 5px;
-    // margin: 0 0 10px 0;
     // background-color: ${COLORS.CORPORATE_BLUE};
     display: flex;
     align-items: center;
@@ -63,15 +59,20 @@ const CategoryName = styled.div<{ $isActive?: boolean }>`
     border-radius: 24px 0 50px 0 ;
 
     @media (${WINDOW_WIDTH.MOBILE}) {
-        // border: 1px solid black;
-        border-radius: 0;
+        // border: 1px solid ${COLORS.CORPORATE_BLUE};
+        // background-color: ${COLORS.CORPORATE_BLUE};
+        // height: 30px;
+        border-radius: 12px;
+        padding: 10px 15px;
         margin: 0 0 10px 0;
-        box-shadow: ${({ $isActive }) => $isActive ? 'none' : `inset 0 -1px 0 ${COLORS.CORPORATE_BLUE}`};
-
-        transition: box-shadow 0.2s ease;
+        font-size: 18px;
+        ${WIX_MADEFOR_TEXT_WEIGHT('500')};
+        letter-spacing: -0.5px;
+        box-shadow: ${({ $isActive }) => ($isActive ? '0px 0px 8px rgba(236, 0, 140, 0.5)' : '0px 0px 8px rgba(19, 67, 149, 0.5)')};
+        transition: box-shadow 0.3s ease;
 
         &:hover {
-            box-shadow: ${({ $isActive }) => $isActive ? 'none' : `inset 0 0 0 ${COLORS.CORPORATE_BLUE}`};
+            box-shadow: 0px 0px 8px rgba(236, 0, 140, 0.5);
         }
     }
 `
@@ -83,11 +84,18 @@ const CategoriesMobileWrapper = styled.div`
         display: flex;
         width: 90%;
         ${WINDOW_WIDTH.SUPER_MINI};
-        height: 120px;
-        margin: 10px 0 40px 0;
+        margin: 20px 0 10px 0;
         justify-content: center;
         flex-wrap: wrap;
     }
+`
+
+const TitleMobileBlock = styled.div`
+    margin: 0 0 10px 0;
+    color: ${COLORS.CORPORATE_BLUE};
+    font-size: 22px;
+    ${WIX_MADEFOR_TEXT_WEIGHT('600')};
+    letter-spacing: -0.5px;
 `
 
 export default function CategoryComponent({selectedCategory, setSelectedCategory}: {
@@ -114,6 +122,7 @@ export default function CategoryComponent({selectedCategory, setSelectedCategory
             </CategoriesWrapper>
 
             <CategoriesMobileWrapper>
+                <TitleMobileBlock> Категории:   </TitleMobileBlock>
                 {categories.map((category, i) => (
                     <CategoryBlock key={category.name} onClick={() => setSelectedCategory(category.type)}>
                         <CategoryName $isActive={category.type === selectedCategory}>
