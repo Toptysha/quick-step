@@ -3,6 +3,11 @@
 import styled from "styled-components";
 import { COLORS, WINDOW_WIDTH, WIX_MADEFOR_TEXT_WEIGHT } from "@/constants";
 import { CatalogButtonComponent } from "@/components";
+import { ExchangeButton } from "../ExchangeButton";
+import { Cover } from "@/types";
+import { openModal } from "@/redux/reducers";
+import { useAppDispatch } from "@/redux/store";
+import CoverExchangeComponent from "./CoverExchange";
 
 const FloorsWrapper = styled.div`
     width: 100%;
@@ -47,6 +52,7 @@ const HeaderLogo = styled.img`
     margin: 0px 20px 0 0;
 `
 const FloorsBlock = styled.div`
+    position: relative;
     width: 100%;
     height: 260px;
     display: flex;
@@ -119,14 +125,8 @@ const ButtonWrapper = styled.div`
     bottom: 10px;
 `
 
-export default function FloorsComponent() {
-    const floorBoxContent = [
-        {title: 'ЛАМИНАТ', src: '/img/floor/floor-1.webp'},
-        {title: 'ВИНИЛ', src: '/img/floor/floor-2.webp'},
-        {title: 'АКСЕССУАРЫ', src: '/img/floor/floor-3.webp'},
-    ]
-
-    // const [refsCurrent, bgCounts] = useTextBackground(floorBoxContent.length)
+export default function FloorsComponent({covers, isAdmin}: {covers: Cover[]; isAdmin: boolean}) {
+    const dispatch = useAppDispatch()
 
     return (
         <FloorsWrapper>
@@ -135,18 +135,21 @@ export default function FloorsComponent() {
                 ПОЛЫ  QUICK-STEP
             </Header> 
             <FloorsBlock>
-    {floorBoxContent.map((item, index) => (
-        <Floor key={`Floor-${index}`}>
-            <TitleBox>
-                {item.title}
-            </TitleBox>
-            <CoverBox src={item.src} alt="Logo" />
-            <ButtonWrapper>
-                <CatalogButtonComponent width="180px" />
-            </ButtonWrapper>
-        </Floor>
-    ))}
-</FloorsBlock>
+                {isAdmin && <ExchangeButton onClick={() => dispatch(openModal({content: <CoverExchangeComponent wallpapers={covers} type='floor' isAdmin={isAdmin} /> }))}>
+                    Изменить
+                </ExchangeButton>}
+                {covers.map((cover, index) => (
+                    <Floor key={`Floor-${index}`}>
+                        <TitleBox>
+                            {cover.description}
+                        </TitleBox>
+                        <CoverBox src={cover.path} alt="Logo" />
+                        <ButtonWrapper>
+                            <CatalogButtonComponent width="180px" />
+                        </ButtonWrapper>
+                    </Floor>
+                ))}
+            </FloorsBlock>
         </FloorsWrapper>
     )
 }

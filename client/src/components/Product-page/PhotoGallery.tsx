@@ -6,7 +6,7 @@ import { COLORS, WINDOW_WIDTH, WIX_MADEFOR_TEXT_WEIGHT } from '@/constants';
 
 const GalleryWrapper = styled.div`
     width: 100%;
-    height: 100%;
+    height: 40%;
 `;
 
 const MainPhotoWrapper = styled.div`
@@ -16,9 +16,10 @@ const MainPhotoWrapper = styled.div`
     transition: opacity 0.4s ease;
 `;
 
-const MainPhoto = styled.img`
+const MainPhoto = styled.img<{ $isMiniHeight: boolean }>`
     width: 100%;
-    height: 100%;
+    // height: 100%;
+    height: ${({ $isMiniHeight }) => ($isMiniHeight ? '80%' : '100%')};
     object-fit: cover;
     border-radius: 16px;
     pointer-events: none;
@@ -84,7 +85,7 @@ const Thumbnail = styled.img<{ $active: boolean }>`
 `;
 
 interface PhotoGalleryProps {
-  photos?: string[];
+  photos: string[];
   cover: string;
 }
 
@@ -107,7 +108,7 @@ export default function PhotoGallery({ photos, cover }: PhotoGalleryProps) {
   const visibleThumbnails = images.slice(start, end);
 
   if (!photos || photos.length <= 1) {
-    return <MainPhoto src={cover} alt="Product Cover" />;
+    return <MainPhoto $isMiniHeight={true} src={cover} alt="Product Cover" />;
   }
 
   const next = () => setCurrent((current + 1) % images.length);
@@ -122,7 +123,7 @@ export default function PhotoGallery({ photos, cover }: PhotoGalleryProps) {
             key={index}
             style={{ opacity: index === current ? 1 : 0 }}
           >
-            <MainPhoto src={img} alt={`Photo ${index + 1}`} />
+            <MainPhoto $isMiniHeight={false} src={img} alt={`Photo ${index + 1}`} />
           </MainPhotoWrapper>
         ))}
         <RightArrow onClick={next}>›</RightArrow>

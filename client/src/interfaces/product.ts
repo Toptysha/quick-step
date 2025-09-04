@@ -4,38 +4,39 @@ export interface FloorCharacteristic {
 }
 
 export interface FloorSize {
-    length?: {name?: 'Длина мм'; value: number};
-    width?: {name?: 'Ширина мм'; value: number};
-    height?: {name?: 'Высота мм'; value: number};
-    mSqareOfPack?: {name?: 'м² / упаковка'; value: number};
-    countOfPack?: {name?: 'штук / упаковка'; value: number};
+    length?: number;
+    width?: number;
+    height?: number;
+    mSqareOfPack?: number;
+    countOfPack?: number;
 }
 
 export interface TechnicalData {
-    manufacturer?: {name?: 'Производитель'; value: string};
-    collection?: {name?: 'Коллекция'; value: string};
-    color?: {name?: 'Цвет'; value: string};
-    chamfersCount?: {name?: 'Количество фасок'; value: string};
-    chamfersType?: {name?: 'Тип Фаски'; value: string};
-    typeOfConnection?: {name?: 'Тип соединения'; value: string};
-    compatibilityWithHeating?: {name?: 'Подогрев полов'; value: string};
-    waterResistance?: {name?: 'Влагостойкость'; value: string};
-    wearResistanceClass?: {name?: 'Класс влагостойкости'; value: string};
-    assurance?: {name?: 'Гарантия'; value: string};
-    lookLike?: {name?: 'Вид под'; value: string};
+    manufacturer?: string;
+    collection?: string;
+    color?: string;
+    chamfersCount?: string;
+    chamfersType?: string;
+    typeOfConnection?: string;
+    compatibilityWithHeating?: string;
+    waterResistance?: string;
+    wearResistanceClass?: string;
+    assurance?: string;
+    lookLike?: string;
 }
 
 export interface Product {
     cover: string;
     photos?: string[];
     article: string;
-    name: string;
-    title?: string;
+    name: string;      // название основное
+    title?: string;    // название расширенное для карочки товара
     type: 'laminat' | 'vinyl' | 'accessory';
     priceOfPack?: number;
-    priceOfMSqare: number;
+    priceOfMSqare?: number;
     remains: number;
     description?: string[]
+    isVisible: boolean;
 
     floorCharacteristics?: FloorCharacteristic[];
     floorSize?: FloorSize;

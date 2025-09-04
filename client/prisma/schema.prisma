@@ -1,0 +1,183 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model Product {
+  id                   Int                   @id @default(autoincrement())
+  cover                String
+  photos               String[]              // PostgreSQL поддерживает массивы
+  article              String                @unique
+  name                 String
+  title                String?
+  type                 ProductType
+  priceOfPack          Float?
+  priceOfMSqare        Float?
+  remains              Int
+  description          String[]
+  isVisible            Boolean              @default(true)
+
+  // Связи
+  floorCharacteristics FloorCharacteristic[]
+  floorSize            FloorSize?
+  technicalData        TechnicalData?
+
+  orderItems           OrderItem[]           @relation("ProductOrderItems")
+
+  createdAt            DateTime              @default(now())
+}
+
+enum ProductType {
+  laminat
+  vinyl
+  accessory
+}
+
+model FloorCharacteristic {
+  id        Int      @id @default(autoincrement())
+  title     String
+  description String
+
+  product   Product  @relation(fields: [productId], references: [id])
+  productId Int
+}
+
+model FloorSize {
+  id              Int      @id @default(autoincrement())
+  length          Float?
+  width           Float?
+  height          Float?
+  mSqareOfPack    Float?
+  countOfPack     Float?
+
+  product   Product  @relation(fields: [productId], references: [id])
+  productId Int      @unique
+}
+
+model TechnicalData {
+  id                      Int     @id @default(autoincrement())
+  manufacturer            String?
+  collection              String?
+  color                   String?
+  chamfersCount           String?
+  chamfersType            String?
+  typeOfConnection        String?
+  compatibilityWithHeating String?
+  waterResistance         String?
+  wearResistanceClass     String?
+  assurance               String?
+  lookLike                String?
+
+  product   Product  @relation(fields: [productId], references: [id])
+  productId Int      @unique
+}
+
+model Admin {
+  id       Int    @id @default(autoincrement())
+  username String @unique
+  password String 
+  token    String? @unique
+}
+
+model Cover {
+  id          Int    @id @default(autoincrement())
+  path        String @unique
+  type        String
+  description String?
+}
+
+enum OrderStatus {
+  processing
+  done
+  canceled
+}
+
+enum OrderFeedback {
+  call
+  sms
+  telegram
+  whatsapp
+}
+
+enum OrderPayMethod {
+  card
+  cash
+  link
+  split
+}
+
+enum OrderDeliveryMethod {
+  pickup
+  courier
+}
+
+model Order {
+  id                Int          @id @default(autoincrement())
+  status            OrderStatus  @default(processing)
+  userName          String
+  phone             String
+  favouriteFeedback OrderFeedback
+  deliveryMethod    OrderDeliveryMethod
+  address           String
+  payMethod         OrderPayMethod
+  comment           String?
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+
+  items             OrderItem[]  // один заказ -> много позиций
+}
+
+model OrderItem {
+  id        Int      @id @default(autoincrement())
+  count     Int      @default(1)
+
+  // связь с заказом
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId   Int
+
+  // связь с продуктом
+  product   Product  @relation("ProductOrderItems", fields: [productId], references: [id])
+  productId Int
+}
+
+model SwitcherOptions {
+  id                      Int       @id @default(1) // можно держать одну строку
+  // Базовые поля товара
+  productTypes            String[]  // laminat, vinyl, accessory (можно держать в синхроне с enum ProductType)
+  manufacturers           String[]  // TechnicalData.manufacturer
+  collections             String[]  // TechnicalData.collection
+  colors                  String[]  // TechnicalData.color
+  chamfersCount           String[]  // TechnicalData.chamfersCount
+  chamfersType            String[]  // TechnicalData.chamfersType
+  typeOfConnection        String[]  // TechnicalData.typeOfConnection
+  compatibilityWithHeating String[] // TechnicalData.compatibilityWithHeating
+  waterResistance         String[]  // TechnicalData.waterResistance
+  wearResistanceClass     String[]  // TechnicalData.wearResistanceClass
+  assurance               String[]  // TechnicalData.assurance
+  lookLike                String[]  // TechnicalData.lookLike
+
+  // Габариты/упаковка (из FloorSize)
+  lengths                 String[]  // "1200", "1380", "1500" и т.п. (храним строками)
+  widths                  String[]  // "190", "210", ...
+  heights                 String[]  // "8", "10", ...
+
+  sortings  String[] // например: ["стандартная", "по возрастанию цены", "по убыванию цены"]
+
+  // Служебные
+  createdAt               DateTime  @default(now())
+  updatedAt               DateTime  @updatedAt
+
+  @@map("SwitcherOptions") // таблица будет "SwitcherOptions" (как и прочие у тебя)
+}

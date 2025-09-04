@@ -122,6 +122,7 @@ export default function CatalogButtonComponent({
     buttonName,
     route,
     children,
+    onClick
 }: {
     width?: string;
     fontSize?: string;
@@ -129,12 +130,14 @@ export default function CatalogButtonComponent({
     buttonName?: string | ReactNode;
     route?: string;
     children?: ReactNode;
+    onClick?: () => void;
 }) {
     return (
         <CatalogButton
             $width={width}
             $fontSize={fontSize}
             $theme={theme || 'blue'}
+            onClick={onClick}
         >
             <NavLink
                 href={route || URL.CATALOG}

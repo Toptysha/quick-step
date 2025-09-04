@@ -4,6 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState: ReduxStore["modal"] = {
   isOpen: false,
   content: null,
+  disableOverlayClose: false,
 };
 
 const ModalSlice = createSlice({
@@ -13,10 +14,12 @@ const ModalSlice = createSlice({
     openModal(state, action) {
       state.isOpen = true;
       state.content = action.payload.content;
+      state.disableOverlayClose = action.payload.disableOverlayClose || false;
     },
     closeModal(state) {
       state.isOpen = false;
       state.content = null;
+      state.disableOverlayClose = false;
     },
   },
 });

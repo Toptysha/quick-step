@@ -86,16 +86,40 @@ interface ProductTabsProps {
 
 export default function ProductTabs({ product }: ProductTabsProps) {
   const { floorCharacteristics, floorSize, technicalData } = product;
-
+  
   const availableTabs = [
     floorCharacteristics?.length && { id: 'characteristics', label: 'Характеристики' },
     floorSize && Object.values(floorSize).some(Boolean) && { id: 'sizes', label: 'Размеры' },
     technicalData && Object.values(technicalData).some(Boolean) && { id: 'tech', label: 'Технические данные' },
   ].filter(Boolean) as { id: string; label: string }[];
-
+  
   const [activeTab, setActiveTab] = useState(availableTabs[0]?.id || '');
-
+  
   if (availableTabs.length === 0) return null;
+
+  // Маппинг для FloorSize
+const floorSizeMap: Record<string, string> = {
+  length: 'Длина мм',
+  width: 'Ширина мм',
+  height: 'Высота мм',
+  mSqareOfPack: 'м² / упаковка',
+  countOfPack: 'штук / упаковка',
+};
+
+// Маппинг для TechnicalData
+const technicalDataMap: Record<string, string> = {
+  manufacturer: 'Производитель',
+  collection: 'Коллекция',
+  color: 'Цвет',
+  chamfersCount: 'Количество фасок',
+  chamfersType: 'Тип фаски',
+  typeOfConnection: 'Тип соединения',
+  compatibilityWithHeating: 'Подогрев полов',
+  waterResistance: 'Влагостойкость',
+  wearResistanceClass: 'Класс влагостойкости',
+  assurance: 'Гарантия',
+  lookLike: 'Вид под',
+};
 
   return (
     <TabsWrapper>
@@ -125,29 +149,29 @@ export default function ProductTabs({ product }: ProductTabsProps) {
 
         {activeTab === 'sizes' && floorSize && (
           <Grid>
-            {Object.entries(floorSize).map(
-              ([key, value]) =>
-                value && (
-                  <Block key={key}>
-                    <BlockTitle>{value.name}</BlockTitle>
-                    <Text>{value.value}</Text>
-                  </Block>
-                )
-            )}
+            {Object.entries(floorSize).map(([key, value]) => {
+              if (!value || !(key in floorSizeMap)) return null; // пропускаем null и поля, которых нет в интерфейсе
+              return (
+                <Block key={key}>
+                  <BlockTitle>{floorSizeMap[key]}</BlockTitle>
+                  <Text>{value}</Text>
+                </Block>
+              );
+            })}
           </Grid>
         )}
 
         {activeTab === 'tech' && technicalData && (
           <Grid>
-            {Object.entries(technicalData).map(
-              ([key, value]) =>
-                value && (
-                  <Block key={key}>
-                    <BlockTitle>{value.name}</BlockTitle>
-                    <Text>{value.value}</Text>
-                  </Block>
-                )
-            )}
+            {Object.entries(technicalData).map(([key, value]) => {
+              if (!value || !(key in technicalDataMap)) return null; // пропускаем пустые строки и лишние ключи
+              return (
+                <Block key={key}>
+                  <BlockTitle>{technicalDataMap[key]}</BlockTitle>
+                  <Text>{value}</Text>
+                </Block>
+              );
+            })}
           </Grid>
         )}
       </TabContent>

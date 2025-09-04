@@ -2,8 +2,15 @@ export { default as CatalogButtonComponent } from './CatalogButton';
 export { default as PhoneBlock } from './PhoneBlock';
 export { default as Modal } from './Modal';
 export { default as Loader } from './Loader';
-export { default as PreloaderScript } from './PreloaderScript';
+export { default as Preloader } from './Preloader';
 export { default as PaginationComponent } from './Pagination';
+export { default as ConfirmDeleteProduct } from './ConfirmDeleteProduct';
+export { default as NotFound } from './NotFound';
+
+export { default as ProductAddFormComponent } from './product-form/ProductModalContent';
+
+export { default as CallbackModal } from './modals/CallbackModal';
+export { default as CheckoutModal } from './modals/CheckoutModal';
 
 export { default as Header } from './Header/Header';
 export { default as HeaderMobile } from './Header/HeaderMobile';

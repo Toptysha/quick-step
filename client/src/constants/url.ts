@@ -1,6 +1,7 @@
 export const URL = {
     HOME: '/',
     CATALOG: '/catalog',
-    FOR_CLIENTS: '/for_clients',
-    CONTACTS: '/contacts'
+    FOR_CLIENTS: '/for-clients',
+    CONTACTS: '/contacts',
+    CART: '/cart'
 }

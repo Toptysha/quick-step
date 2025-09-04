@@ -1,8 +1,12 @@
 'use client';
 
 import { COLORS, WINDOW_WIDTH, WIX_MADEFOR_TEXT_WEIGHT } from "@/constants";
-import { Cover } from "@/interfaces";
+import { openModal } from "@/redux/reducers";
+import { useAppDispatch } from "@/redux/store";
+import { Cover } from "@/types";
 import styled from "styled-components";
+import { ExchangeButton } from "../ExchangeButton";
+import CoverExchangeComponent from "./CoverExchange";
 
 const InfoWrapper = styled.div`
     width: 100%;
@@ -80,7 +84,10 @@ const MoreInfoButton = styled.button`
     }
 `
 
-export default function InfoComponent({covers}: {covers: Cover[]}) {
+export default function InfoComponent({covers, isAdmin}: {covers: Cover[]; isAdmin: boolean}) {
+
+      const dispatch = useAppDispatch()
+
     return (
         <InfoWrapper>
             <ItemWrapper>
@@ -90,16 +97,19 @@ export default function InfoComponent({covers}: {covers: Cover[]}) {
                 <MoreInfoButton>
                     Подробнее
                 </MoreInfoButton>
-                <InfoImg src={covers[0].src} alt={covers[0].alt} />
+                <InfoImg src={covers[1]?.path} alt={`cover-1`} />
             </ItemWrapper>
             <ItemWrapper>
+                {isAdmin && <ExchangeButton onClick={() => dispatch(openModal({content: <CoverExchangeComponent wallpapers={covers} type='info' isAdmin={isAdmin} /> }))}>
+                    Изменить
+                </ExchangeButton>}
                 <BlockName>
                     РЕШЕНИЯ  В  ИНТЕРЬЕРЕ
                 </BlockName>
                 <MoreInfoButton>
                     Подробнее
                 </MoreInfoButton>
-                <InfoImg src={covers[1].src} alt={covers[1].alt} />
+                <InfoImg src={covers[0]?.path} alt={`cover-2`} />
             </ItemWrapper>
         </InfoWrapper>
     )

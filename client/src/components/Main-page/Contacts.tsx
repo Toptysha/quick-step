@@ -2,139 +2,155 @@
 
 import styled from "styled-components";
 import { WINDOW_WIDTH, WIX_MADEFOR_TEXT_WEIGHT } from "@/constants";
+import { Cover } from "@/types";
+import { ExchangeButton } from "../ExchangeButton";
+import { openModal } from "@/redux/reducers";
+import { useAppDispatch } from "@/redux/store";
+import CoverExchangeComponent from "./CoverExchange";
+
+// Корневой контейнер с якорем
+const ContactsAnchor = styled.section`
+  width: 100%;
+  /* чтобы якорь не прятался под фиксированным блоком вверху */
+  scroll-margin-top: 40px;
+
+  @media (${WINDOW_WIDTH.MOBILE}) {
+    scroll-margin-top: 80px;
+  }
+`;
 
 const ContactsWrapper = styled.div`
-    width: 100%;
-    height: 600px;
-    margin: 40px 0 40px 0;
-    border-radius: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    overflow: hidden;
+  width: 100%;
+  height: 600px;
+  margin: 40px 0 40px 0;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
 
-    @media (${WINDOW_WIDTH.MOBILE}) {
-        display: none;
-    }
-`
+  @media (${WINDOW_WIDTH.MOBILE}) {
+    display: none;
+  }
+`;
 
 const MapContainer = styled.div`
-    width: 50%;
-    height: 100%;
-    border-radius: 24px;
-    overflow: hidden;
+  width: 50%;
+  height: 100%;
+  border-radius: 24px;
+  overflow: hidden;
 
-    @media (${WINDOW_WIDTH.MOBILE}) {
-        width: 100%;
-        height: 400px;
-    }    
+  @media (${WINDOW_WIDTH.MOBILE}) {
+    width: 100%;
+    height: 400px;
+  }
 `;
 
 const MapIframe = styled.iframe`
-    width: 100%;
-    height: 100%;
-    border: none;
+  width: 100%;
+  height: 100%;
+  border: none;
 `;
 
 const InfoContainer = styled.div`
-    width: 50%;
-    height: 100%;
-    overflow: hidden;
-    padding: 0 40px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    ${WIX_MADEFOR_TEXT_WEIGHT('400')};
-    letter-spacing: -0.5px;
-    font-size: 18px;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  padding: 0 40px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  ${WIX_MADEFOR_TEXT_WEIGHT('400')};
+  letter-spacing: -0.5px;
+  font-size: 18px;
 
-    @media (${WINDOW_WIDTH.MOBILE}) {
-        font-size: 14px;
-    }
+  @media (${WINDOW_WIDTH.MOBILE}) {
+    font-size: 14px;
+  }
 `;
 
 const HeaderLogo = styled.img`
-    width: 220px;
-    margin: 0px 0 30px 0;
+  width: 220px;
+  margin: 0px 0 30px 0;
 
-    @media (${WINDOW_WIDTH.MOBILE}) {
-        width: 160px;
-    }
+  @media (${WINDOW_WIDTH.MOBILE}) {
+    width: 160px;
+  }
 `;
 
 const Description = styled.div`
-    width: 100%;
-    margin: 0 0 20px 0;
+  width: 100%;
+  margin: 0 0 20px 0;
 
-    @media (max-width: 800px) {
-        display: none;
-    }
-`
+  @media (max-width: 800px) {
+    display: none;
+  }
+`;
 
 const SalonBox = styled.div`
-    position: relative;
-    width: 50%;
-    height: 100%;
-    border-radius: 12px;
-    overflow: hidden;
+  position: relative;
+  width: 50%;
+  height: 100%;
+  border-radius: 12px;
+  overflow: hidden;
 
-    @media (${WINDOW_WIDTH.MOBILE}) {
-        width: 100%;
-        height: 400px;
-        background: green;
-        margin: 0 0 20px 0;
-    }
-`
+  @media (${WINDOW_WIDTH.MOBILE}) {
+    width: 100%;
+    height: 400px;
+    background: green;
+    margin: 0 0 20px 0;
+  }
+`;
 
 const SalonImg = styled.img`
-    position: absolute;
-    bottom: 0;
-    left: 0px;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: bottom;
-    z-index: 0;
-`
+  position: absolute;
+  bottom: 0;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: bottom;
+  z-index: 0;
+`;
 
 const InfoBottom = styled.div`
-    width: 100%;
-    min-height: 50%;
-    display: flex;
-    justify-content: space-between;
+  width: 100%;
+  min-height: 50%;
+  display: flex;
+  justify-content: space-between;
 
-    @media (${WINDOW_WIDTH.MOBILE}) {
-        justify-content: center;
-        flex-wrap: wrap;
-    }
+  @media (${WINDOW_WIDTH.MOBILE}) {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
 `;
 
 const Info = styled.div`
-    width: 50%;
-    height: 100%;
-    padding: 10px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    font-size: 18px;
+  width: 50%;
+  height: 100%;
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  font-size: 18px;
 
-    @media (${WINDOW_WIDTH.MOBILE}) {
-        width: 100%;
-        margin: -30px 0 0 0;
-        font-size: 14px;
-    }
-`
+  @media (${WINDOW_WIDTH.MOBILE}) {
+    width: 100%;
+    margin: -30px 0 0 0;
+    font-size: 14px;
+  }
+`;
 
 const InfoPoint = styled.div`
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    @media (${WINDOW_WIDTH.MOBILE}) {
-        width: 100%;
-        margin: 20px auto;
-    }
+  @media (${WINDOW_WIDTH.MOBILE}) {
+    width: 100%;
+    margin: 20px auto;
+  }
 `;
 
 const Icon = styled.img`
@@ -144,127 +160,162 @@ const Icon = styled.img`
 `;
 
 const TextWrapper = styled.div`
-    width: 80%;
-
-    // @media (${WINDOW_WIDTH.MOBILE}) {
-    //     width: auto;
-    // }
-`
+  width: 80%;
+`;
 
 const InfoTitle = styled.div`
-    width: 100%;
+  width: 100%;
 `;
 
 const InfoDescription = styled.div`
-    width: 100%;
-    ${WIX_MADEFOR_TEXT_WEIGHT('500')};
-    font-size: 20px;
+  width: 100%;
+  ${WIX_MADEFOR_TEXT_WEIGHT('500')};
+  font-size: 20px;
 
-    @media (${WINDOW_WIDTH.MOBILE}) {
-        font-size: 14px;
-    }
+  @media (${WINDOW_WIDTH.MOBILE}) {
+    font-size: 14px;
+  }
 `;
 
 const ContactsWrapperMobile = styled.div`
-    width: 90%;
-    height: 1200px;
-    margin: 40px 0 40px 0;
-    border-radius: 24px;
-    display: none;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
+  width: 90%;
+  height: 1200px;
+  margin: 40px 0 40px 0;
+  border-radius: 24px;
+  display: none;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 
-    @media (${WINDOW_WIDTH.MOBILE}) {
-        display: flex;
-        ${WINDOW_WIDTH.SUPER_MINI};
-    }
-`
+  @media (${WINDOW_WIDTH.MOBILE}) {
+    display: flex;
+    ${WINDOW_WIDTH.SUPER_MINI};
+  }
+`;
 
 const HeaderLogoMobileDiv = styled.div`
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
-export default function ContactsComponent() {
-    const infoPoints = [
-        {title: 'Адрес магазина:', description: 'г. Воронеж, ул. Донбасская, 5', src: '/icons/decor-elements/location-pin.svg'},
-        {title: 'Наш телефон:', description: '+7 (999) 721-57-40', src: '/icons/social/phone-icon.svg'},
-        {title: 'Время работы:', description: <>Пн-Пт: 10:00 - 19:00<br/>Сб-Вс: 10:00 - 18:00</>, src: '/icons/decor-elements/clock.svg'},
-    ]
+export default function ContactsComponent({
+  covers,
+  isAdmin,
+}: {
+  covers: Cover[];
+  isAdmin: boolean;
+}) {
+  const dispatch = useAppDispatch();
 
-    return (
-        <>
-            <ContactsWrapper>
-                <MapContainer>
-                    <MapIframe
-                        src="https://yandex.ru/map-widget/v1/?ll=39.181869%2C51.673449&mode=search&poi%5Bpoint%5D=39.181957%2C51.673277&poi%5Buri%5D=ymapsbm1%3A%2F%2Forg%3Foid%3D120254340909&z=16.9"
-                        allowFullScreen
-                        title="Yandex Map"
-                    />
-                </MapContainer>
-                <InfoContainer>
-                    <HeaderLogo src="/icons/header-logo.svg" alt="Logo" />
-                    <Description>
-                        Удобный дом невозможно представить без качественных полов. Компания Quick-Step следует этому постулату с 1990 года. Сегодня мы предлагаем широкий ассортимент долговечного ламината и виниловых напольных покрытий.
-                    </Description>
-                    <InfoBottom>
-                        <SalonBox>
-                            <SalonImg src="img/salon/salon.jpg" alt="Salon" /> 
-                        </SalonBox>
-                        <Info>
-                            {infoPoints.map((point, index ) => (
-                                <InfoPoint key={`info-point-${index}`}>
-                                    <Icon src={point.src} alt="icon" />
-                                    <TextWrapper>
-                                        <InfoTitle>
-                                            {point.title}
-                                        </InfoTitle>
-                                        <InfoDescription>
-                                            {point.description}
-                                        </InfoDescription>
-                                    </TextWrapper>
-                                </InfoPoint>
-                            ))}
-                        </Info>
-                    </InfoBottom>
-                </InfoContainer>
-            </ContactsWrapper>
-            <ContactsWrapperMobile>
-                <HeaderLogoMobileDiv>
-                    <HeaderLogo src="/icons/header-logo.svg" alt="Logo" />
-                </HeaderLogoMobileDiv>
-                <InfoBottom>
-                    <SalonBox>
-                        <SalonImg src="img/salon/salon.jpg" alt="Salon" /> 
-                    </SalonBox>
-                    <Info>
-                        {infoPoints.map((point, index ) => (
-                            <InfoPoint key={`info-point-${index}`}>
-                                <Icon src={point.src} alt="icon" />
-                                <TextWrapper>
-                                    <InfoTitle>
-                                        {point.title}
-                                    </InfoTitle>
-                                    <InfoDescription>
-                                        {point.description}
-                                    </InfoDescription>
-                                </TextWrapper>
-                            </InfoPoint>
-                        ))}
-                    </Info>
-                </InfoBottom>
-                <MapContainer>
-                    <MapIframe
-                        src="https://yandex.ru/map-widget/v1/?ll=39.181869%2C51.673449&mode=search&poi%5Bpoint%5D=39.181957%2C51.673277&poi%5Buri%5D=ymapsbm1%3A%2F%2Forg%3Foid%3D120254340909&z=16.9"
-                        allowFullScreen
-                        title="Yandex Map"
-                    />
-                </MapContainer>
-            </ContactsWrapperMobile>
-        </>
-    )
+  const infoPoints = [
+    { title: "Адрес магазина:", description: "г. Воронеж, ул. Донбасская, 5", src: "/icons/decor-elements/location-pin.svg" },
+    { title: "Наш телефон:", description: "+7 (999) 721-57-40", src: "/icons/social/phone-icon.svg" },
+    { title: "Время работы:", description: <>Пн-Пт: 10:00 - 19:00<br/>Сб-Вс: 10:00 - 18:00</>, src: "/icons/decor-elements/clock.svg" },
+  ];
+
+  return (
+    <ContactsAnchor id="contacts">
+      <ContactsWrapper>
+        <MapContainer>
+          <MapIframe
+            src="https://yandex.ru/map-widget/v1/?ll=39.181869%2C51.673449&mode=search&poi%5Bpoint%5D=39.181957%2C51.673277&poi%5Buri%5D=ymapsbm1%3A%2F%2Forg%3Foid%3D120254340909&z=16.9"
+            allowFullScreen
+            title="Yandex Map"
+          />
+        </MapContainer>
+        <InfoContainer>
+          <HeaderLogo src="/icons/header-logo.svg" alt="Logo" />
+          <Description>
+            Удобный дом невозможно представить без качественных полов. Компания Quick-Step следует этому постулату с 1990 года. Сегодня мы предлагаем широкий ассортимент долговечного ламината и виниловых напольных покрытий.
+          </Description>
+          <InfoBottom>
+            <SalonBox>
+              {isAdmin && (
+                <ExchangeButton
+                  onClick={() =>
+                    dispatch(
+                      openModal({
+                        content: (
+                          <CoverExchangeComponent
+                            wallpapers={covers}
+                            type="salon"
+                            isAdmin={isAdmin}
+                          />
+                        ),
+                      })
+                    )
+                  }
+                >
+                  Изменить
+                </ExchangeButton>
+              )}
+              <SalonImg src={covers[0]?.path} alt="Salon" />
+            </SalonBox>
+            <Info>
+              {infoPoints.map((point, index) => (
+                <InfoPoint key={`info-point-${index}`}>
+                  <Icon src={point.src} alt="icon" />
+                  <TextWrapper>
+                    <InfoTitle>{point.title}</InfoTitle>
+                    <InfoDescription>{point.description}</InfoDescription>
+                  </TextWrapper>
+                </InfoPoint>
+              ))}
+            </Info>
+          </InfoBottom>
+        </InfoContainer>
+      </ContactsWrapper>
+
+      <ContactsWrapperMobile>
+        <HeaderLogoMobileDiv>
+          <HeaderLogo src="/icons/header-logo.svg" alt="Logo" />
+        </HeaderLogoMobileDiv>
+        <InfoBottom>
+          <SalonBox>
+            {isAdmin && (
+              <ExchangeButton
+                onClick={() =>
+                  dispatch(
+                    openModal({
+                      content: (
+                        <CoverExchangeComponent
+                          wallpapers={covers}
+                          type="salon"
+                          isAdmin={isAdmin}
+                        />
+                      ),
+                    })
+                  )
+                }
+              >
+                Изменить
+              </ExchangeButton>
+            )}
+            <SalonImg src={covers[0]?.path} alt="Salon" />
+          </SalonBox>
+          <Info>
+            {infoPoints.map((point, index) => (
+              <InfoPoint key={`info-point-${index}`}>
+                <Icon src={point.src} alt="icon" />
+                <TextWrapper>
+                  <InfoTitle>{point.title}</InfoTitle>
+                  <InfoDescription>{point.description}</InfoDescription>
+                </TextWrapper>
+              </InfoPoint>
+            ))}
+          </Info>
+        </InfoBottom>
+        <MapContainer>
+          <MapIframe
+            src="https://yandex.ru/map-widget/v1/?ll=39.181869%2C51.673449&mode=search&poi%5Bpoint%5D=39.181957%2C51.673277&poi%5Buri%5D=ymapsbm1%3A%2F%2Forg%3Foid%3D120254340909&z=16.9"
+            allowFullScreen
+            title="Yandex Map"
+          />
+        </MapContainer>
+      </ContactsWrapperMobile>
+    </ContactsAnchor>
+  );
 }

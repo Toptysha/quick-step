@@ -37,7 +37,6 @@ const LoaderVision = styled.div`
 
 export default function Loader() {
   const loader = useSelector(selectLoader);
-  console.log('Loader: ', loader)
 
   const [mounted, setMounted] = useState(false);
   useEffect(() => {

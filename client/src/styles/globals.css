@@ -13,6 +13,15 @@
   font-style: normal;
 }
 
+/* пока страница "loading" — не показываем контент, запрещаем анимации/трансформации */
+html.loading body > *:not(#preloader-html) {
+  visibility: hidden;
+}
+
+html:not(.loading) body > * {
+  visibility: visible;
+}
+
 * {
   margin: 0;
   padding: 0;

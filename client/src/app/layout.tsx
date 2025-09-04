@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "../styles/globals.css";
 import StyledComponentsRegistry from "./styled-components-registry";
-import { Footer, Header, Loader, Modal, PreloaderScript } from "@/components";
+import { Footer, Header, Loader, Modal, Preloader } from "@/components";
 import { ReduxProvider } from "@/providers";
 
 export const metadata: Metadata = {
@@ -70,13 +70,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ru" className="loading">
       <body>
-        <div id="preloader-html">
-          <div className="preloader-loaderVision"></div>
-        </div>
+        <Preloader />
 
         <ReduxProvider>
           <StyledComponentsRegistry>
-            <PreloaderScript />
             <Loader />
             <Header />
             {children}

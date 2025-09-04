@@ -3,8 +3,12 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { COLORS, WINDOW_WIDTH, WIX_MADEFOR_TEXT_WEIGHT } from "@/constants";
-import { Cover } from "@/interfaces";
+import { Cover } from "@/types";
 import { CatalogButtonComponent } from "@/components";
+import { useAppDispatch } from "@/redux/store";
+import { openModal } from "@/redux/reducers";
+import { ExchangeButton } from "../ExchangeButton";
+import CoverExchangeComponent from "./CoverExchange";
 
 const WallpaperWrapper = styled.div`
   position: relative;
@@ -30,12 +34,12 @@ const WallpaperImageBase = ({ $active, ...rest }: {$active?: boolean} & React.Im
 );
 
 const WallpaperImage = styled(WallpaperImageBase)<{$active?: boolean}>`
+  position: absolute;
   width: 100%;
   height: 100%;
   object-fit: cover;
   border-radius: 24px;
   transition: opacity 0.8s ease-in-out;
-  position: absolute;
   top: 0;
   left: 0;
   opacity: ${(props) => (props.$active ? 1 : 0)};
@@ -54,8 +58,8 @@ const WallpaperDescription = styled.div<{
   // background: rgba(0, 0, 0, 0.1);
   padding: 12px 20px;
   border-radius: 12px;
-  font-size: 44px;
   max-width: 500px;
+  font-size: 44px;
   color: ${COLORS.CORPORATE_GRAY};
   ${WIX_MADEFOR_TEXT_WEIGHT('600')};
   letter-spacing: -1.5px;
@@ -81,74 +85,44 @@ const BackgroundDescriptionWrapper = styled.div`
   }
 `;
 
-// const BackgroundWrapper = styled.div`
-//   position: absolute;
-//   top: 10px;
-//   left: 0;
-//   z-index: -1;
-//   display: flex;
-//   flex-direction: column;
-//   gap: 0px;
-// `;
-
-// const BackgroundWrapperLine = styled.div`
-//   margin: 4px 0 -6px 0;
-//   display: flex;
-// `;
-
-// const BackgroundImg = styled.img`
-//   width: 100px;
-//   height: 60px;
-//   margin: 0 0 0 -24px;
-//   object-fit: fill;
-
-// `;
-
-export default function WallpaperComponent({wallpapers}: {wallpapers: Cover[]}) {
+export default function WallpaperComponent({wallpapers, isAdmin}: {wallpapers: Cover[]; isAdmin: boolean}) {
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  // const [refs, metrics] = useTextMetrics(wallpapers.map(w => w.description as string));
+
+  const dispatch = useAppDispatch()
 
   const handleNext = () => {
     setCurrentIndex((prev) => (prev + 1) % wallpapers.length);
   };
 
   useEffect(() => {
+    if (!wallpapers.length) return;
+
     const interval = setInterval(() => {
-      handleNext();
+      setCurrentIndex((prev) => (prev + 1) % wallpapers.length);
     }, 8000);
+
     return () => clearInterval(interval);
-  }, []);
+  }, [wallpapers.length]);
 
   return (
         <WallpaperWrapper>
+          {isAdmin && <ExchangeButton onClick={() => dispatch(openModal({content: <CoverExchangeComponent wallpapers={wallpapers} type='wallpaper' isAdmin={isAdmin} /> }))}>
+            Изменить
+          </ExchangeButton>}
           {wallpapers.map((wallpaperInfo, index) => {
             return (
-              <div key={wallpaperInfo.id}>
+              <div key={`wallpaper-${index}`}>
                 <WallpaperImage
-                  src={wallpaperInfo.src}
-                  alt={wallpaperInfo.alt}
+                  src={wallpaperInfo.path}
+                  alt={`wallpaper-${index}`}
                   $active={index === currentIndex}
                   onClick={() => handleNext()}
                 />
                 <WallpaperDescription
                   $active={index === currentIndex}
                   $index={index}
-                  // ref={el => {refs.current[index] = el; }}
                 >
-                    {/* <BackgroundWrapper>
-                      {Array.from({ length: metrics[index]?.lineCount || 1 }).map((_, lineIdx) => (
-                        <BackgroundWrapperLine key={lineIdx}>
-                          {Array.from({ length: metrics[index]?.bgCount || 0 }).map((_, bgIdx) => (
-                            <BackgroundImg
-                              key={`${lineIdx}-${bgIdx}`}
-                              src="/icons/text-background.svg"
-                              alt="Background"
-                            />
-                          ))}
-                        </BackgroundWrapperLine>
-                      ))}
-                    </BackgroundWrapper> */}
                     <BackgroundDescriptionWrapper>
                       {wallpaperInfo.description}
                     </BackgroundDescriptionWrapper>

@@ -9,6 +9,7 @@ export interface ReduxStore{
     modal: {
         isOpen: boolean,
         content: ReactNode;
+        disableOverlayClose: boolean;
     },
     loader: {isLoad: boolean},
     authorize: {loginWindowState: 'close' | 'register' | 'login'},

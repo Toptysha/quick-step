@@ -63,8 +63,6 @@ export default function Modal() {
     const dispatch = useAppDispatch()
     const modal = useSelector(selectModal)
 
-    console.log('MODAL: ', modal)
-
   useEffect(() => {
     if (modal.isOpen) {
       document.body.style.overflow = "hidden";
@@ -80,7 +78,13 @@ export default function Modal() {
   if (!modal.isOpen) return null;
 
   return (
-    <Overlay onClick={() => dispatch(closeModal())}>
+    <Overlay
+      onClick={() => {
+        if (!modal.disableOverlayClose) {
+          dispatch(closeModal());
+        }
+      }}
+    >
       <ModalContainer onClick={(e) => e.stopPropagation()}>
         <CloseButton onClick={() => dispatch(closeModal())}>×</CloseButton>
         {modal.content}

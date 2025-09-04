@@ -1,9 +1,13 @@
 "use client";
 
 import styled from "styled-components";
+import Link from "next/link";
+import { useEffect, useState, MouseEvent } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import { COLORS, URL, WINDOW_WIDTH, WIX_MADEFOR_TEXT_WEIGHT } from "@/constants";
 import { HeaderMobile, PhoneBlock, SearchLine } from "@/components";
-import { HeaderLinks } from "@/interfaces";
+import { HeaderLinks, OrderCookie } from "@/interfaces";
+import { getOrder } from "@/utils";
 
 const HeaderWrapper = styled.header`
   width: 100%;
@@ -22,9 +26,9 @@ const HeaderLogo = styled.img`
   width: 180px;
 `;
 
-const BucketIcon = styled.img`
+const BucketIcon = styled.img<{ $isOrderEmpty: boolean }>`
   width: 35px;
-  opacity: 0.7;
+  opacity: ${({ $isOrderEmpty }) => ($isOrderEmpty ? "0.7" : "1")};
 `;
 
 const HeaderWrapperMini = styled.div`
@@ -60,23 +64,23 @@ const RightBlock = styled(SideBlock)`
 `;
 
 const CenterBlock = styled.div`
-    position: fixed;
-    z-index: 1000;
-    top: 20px;
-    width: 560px;
-    height: 80px;
-    min-width: 500px;
-    border-radius: 12px;
-    background-color: white;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 100px;
+  position: fixed;
+  z-index: 1000;
+  top: 20px;
+  width: 560px;
+  height: 80px;
+  min-width: 500px;
+  border-radius: 12px;
+  background-color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 100px;
 
-    @media (${WINDOW_WIDTH.MOBILE}) {
-      display: none;
-    }
+  @media (${WINDOW_WIDTH.MOBILE}) {
+    display: none;
+  }
 `;
 
 const CenterBlockContainer = styled.div`
@@ -89,83 +93,153 @@ const CenterBlockContainer = styled.div`
 `;
 
 const Navigation = styled.nav`
-    width: 450px;
-    height: 40%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-`
+  width: 450px;
+  height: 40%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
 
-const NavLink = styled.a`
-    font-size: 20px;
-    color: ${COLORS.CORPORATE_BLUE};
-    ${WIX_MADEFOR_TEXT_WEIGHT('400')};
-    letter-spacing: -0.5px;
+// Стилизуем Link как ссылку
+const NavLink = styled(Link)`
+  font-size: 20px;
+  color: ${COLORS.CORPORATE_BLUE};
+  ${WIX_MADEFOR_TEXT_WEIGHT("400")};
+  letter-spacing: -0.5px;
+  transition: color 0.3s ease;
 
-    transition: color 0.3s ease;
-
-    &:hover {
-        color: black;
-    }
-`
+  &:hover {
+    color: black;
+  }
+`;
 
 const DivBucket = styled.div`
-    position: relative;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-`
-const BucketCount = styled.div`
-    position: absolute;
-    top: 8px;
-    left: 32px;
-    width: 15px;
-    height: 15px;
-    background-color: rgb(255, 0, 0);
-    color: white;
-    border-radius: 50%;
-    text-align: center;
-    font-size: 12px;
+  cursor: pointer;
+  position: relative;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const BucketCount = styled.div<{ $isOrderEmpty: boolean }>`
+  position: absolute;
+  top: 8px;
+  left: 32px;
+  width: 15px;
+  height: 15px;
+  background-color: ${({ $isOrderEmpty }) =>
+    $isOrderEmpty ? "rgb(155, 0, 0)" : "rgb(0, 155, 0)"};
+  color: white;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 12px;
 `;
 
 export default function Header() {
   const links: HeaderLinks[] = [
-    {title: 'Главная', href: URL.HOME},
-    {title: 'Каталог', href: URL.CATALOG},
-    {title: 'Клиентам', href: URL.FOR_CLIENTS},
-    {title: 'Контакты', href: URL.CONTACTS},
-  ]
+    { title: "Главная", href: URL.HOME },
+    { title: "Каталог", href: URL.CATALOG },
+    { title: "Клиентам", href: URL.FOR_CLIENTS },
+    { title: "Контакты", href: URL.CONTACTS }, // эту перехватим
+  ];
+
+  const [orders, setOrders] = useState<OrderCookie | null>(null);
+
+  const router = useRouter();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    (async () => {
+      const order = await getOrder();
+      setOrders(order);
+    })();
+  }, []);
+
+  const isOrderEmpty = () => !orders || orders.items.length === 0;
+
+  const goToCart = () => {
+    router.push("/cart");
+  };
+
+  // Обработчик клика по "Контакты"
+  const handleContactsClick = (e: MouseEvent) => {
+    e.preventDefault();
+
+    const anchor = "#contacts";
+
+    if (pathname !== "/") {
+      // Переходим на главную с якорем — Next сам доскроллит
+      router.push("/" + anchor);
+      return;
+    }
+
+    // Уже на главной: мягко проскроллим к блоку
+    const el = document.getElementById("contacts");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    } else {
+      // На всякий: если якорь ещё не отрендерился
+      window.location.hash = anchor;
+    }
+  };
 
   return (
     <HeaderWrapper>
-        <HeaderWrapperMini>
-            <LeftBlock>
-                <HeaderLogo src="/icons/header-logo.svg" alt="Logo" />
-            </LeftBlock>
-            <RightBlock>
-                <PhoneBlock />
-            </RightBlock>
-        </HeaderWrapperMini>
-        <CenterBlock>
-            <CenterBlockContainer>
-                <Navigation>
-                    {links.map((link, i) => (
-                      <NavLink href={link.href} key={`link-${i}`} >{link.title}</NavLink>
-                    ))}
-                </Navigation>
-                <SearchLine />
-            </CenterBlockContainer>
-            <DivBucket>
-                <BucketIcon src="/icons/decor-elements/bucket-blue-icon.svg" alt="Bucket" />
-                <BucketCount>
-                    0
-                </BucketCount>
-            </DivBucket>
-        </CenterBlock>
-        <HeaderMobile links={links} />
+      <HeaderWrapperMini>
+        <LeftBlock>
+          <HeaderLogo src="/icons/header-logo.svg" alt="Logo" />
+        </LeftBlock>
+        <RightBlock>
+          <PhoneBlock />
+        </RightBlock>
+      </HeaderWrapperMini>
+
+      <CenterBlock>
+        <CenterBlockContainer>
+          <Navigation>
+            {links.map((link, i) => {
+              const isContacts = link.href === URL.CONTACTS || link.title.toLowerCase() === "контакты";
+
+              // Для "Контактов" используем якорь/скролл
+              if (isContacts) {
+                return (
+                  <NavLink
+                    href="/#contacts"
+                    key={`link-${i}`}
+                    onClick={handleContactsClick}
+                  >
+                    {link.title}
+                  </NavLink>
+                );
+              }
+
+              // Остальные — обычные ссылки
+              return (
+                <NavLink href={link.href} key={`link-${i}`}>
+                  {link.title}
+                </NavLink>
+              );
+            })}
+          </Navigation>
+
+          <SearchLine />
+        </CenterBlockContainer>
+
+        <DivBucket onClick={goToCart}>
+          <BucketIcon
+            $isOrderEmpty={isOrderEmpty()}
+            src="/icons/decor-elements/bucket-blue-icon.svg"
+            alt="Bucket"
+          />
+          <BucketCount $isOrderEmpty={isOrderEmpty()}>
+            {isOrderEmpty() ? 0 : orders?.items.length}
+          </BucketCount>
+        </DivBucket>
+      </CenterBlock>
+
+      <HeaderMobile links={links} />
     </HeaderWrapper>
   );
 }
-
