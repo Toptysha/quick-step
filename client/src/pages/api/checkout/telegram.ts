@@ -5,16 +5,12 @@ import {
   OrderPayMethod,
   OrderDeliveryMethod,
   OrderStatus,
-} from '@/generated/prisma'; // ← твой путь к сгенерированным типам
+} from '@/generated/prisma';
 
 const prisma = new PrismaClient();
 
-// Несколько chat_id через запятую
 const TG_TOKEN = process.env.TG_BOT_TOKEN || '';
-const TG_CHAT_IDS = (process.env.TG_CHAT_ID || '')
-  .split(',')
-  .map((s) => s.trim())
-  .filter(Boolean);
+const TG_CHAT_IDS: number[] = process.env.TG_CHAT_IDS ? JSON.parse(process.env.TG_CHAT_IDS) : [];
 
 // ===== Тип входящего payload (от фронта) =====
 type CheckoutPayload = {
@@ -37,7 +33,6 @@ type CheckoutPayload = {
       apartment?: string | null;
     } | null;
   };
-  // ВАЖНО: ты поменял Prisma enum -> link есть в БД
   payment: 'card' | 'cash' | 'link' | 'split';
   comment?: string | null;
   order: {
@@ -126,7 +121,7 @@ function renderMessage(saved: {
   );
 }
 
-// ===== Маппинг фронтовых значений → Prisma enum =====
+// ===== Маппинг =====
 function mapFeedback(m?: CheckoutPayload['customer']['preferredContact']): OrderFeedback {
   const method = m?.method;
   if (method === 'sms') return OrderFeedback.sms;
@@ -137,12 +132,11 @@ function mapFeedback(m?: CheckoutPayload['customer']['preferredContact']): Order
 
 function mapPayMethod(p: CheckoutPayload['payment']): OrderPayMethod {
   if (p === 'cash') return OrderPayMethod.cash;
-  if (p === 'link') return OrderPayMethod.link; // ← ты обновил enum в БД
+  if (p === 'link') return OrderPayMethod.link;
   if (p === 'split') return OrderPayMethod.split;
   return OrderPayMethod.card;
 }
 
-// ⛔️ Исправление: сюда передаём ТОЛЬКО p.delivery, а не весь payload!
 function mapDelivery(d: CheckoutPayload['delivery']): { method: OrderDeliveryMethod; address: string } {
   if (d.type === 'pickup') {
     const addr = d.pickup?.address || '';
@@ -160,23 +154,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   if (!TG_TOKEN || TG_CHAT_IDS.length === 0) {
-    return res.status(500).json({ error: 'Telegram credentials are missing (TG_BOT_TOKEN/TG_CHAT_ID)' });
+    return res.status(500).json({ error: 'Telegram credentials are missing (TG_BOT_TOKEN/TG_CHAT_IDS)' });
   }
 
   try {
     const p = req.body as CheckoutPayload;
 
-    // Мини-валидация
     if (!p?.customer?.name || !p?.customer?.phone || !Array.isArray(p?.order?.items) || p.order.items.length === 0) {
       return res.status(400).json({ error: 'Invalid payload' });
     }
 
-    // Готовим данные для БД
     const favouriteFeedback = mapFeedback(p.customer.preferredContact);
     const payMethod = mapPayMethod(p.payment);
-    const { method: deliveryMethod, address } = mapDelivery(p.delivery); // ← ВАЖНО: p.delivery
+    const { method: deliveryMethod, address } = mapDelivery(p.delivery);
 
-    // Найдём продукты по артикулам
     const articles = [...new Set(p.order.items.map((i) => i.article))];
     const products = await prisma.product.findMany({
       where: { article: { in: articles } },
@@ -189,7 +180,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(400).json({ error: `Products not found by article: ${notFound.join(', ')}` });
     }
 
-    // Транзакция: создаем Order + OrderItem[]
     const saved = await prisma.$transaction(async (tx) => {
       const order = await tx.order.create({
         data: {
@@ -216,7 +206,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return order;
     });
 
-    // Сообщение для Telegram
     const dbItems = p.order.items.map((i) => ({
       article: i.article,
       name: i.name,
